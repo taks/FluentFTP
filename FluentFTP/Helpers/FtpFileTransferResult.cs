@@ -7,7 +7,7 @@ namespace FluentFTP {
 	/// <summary>
 	/// Stores the result of a file transfer when UploadDirectory or DownloadDirectory is used.
 	/// </summary>
-	public class FtpResult {
+	public class FtpFileTransferResult {
 
 		/// <summary>
 		/// Returns true if the file was downloaded, false if it was uploaded.

@@ -40,7 +40,7 @@ namespace FluentFTP {
 		/// Returns a listing of all the remote files, indicating if they were downloaded, skipped or overwritten.
 		/// Returns a blank list if nothing was transfered. Never returns null.
 		/// </returns>
-		public List<FtpResult> TransferDirectory(string sourceFolder, FtpClient remoteClient, string remoteFolder, FtpFolderSyncMode mode = FtpFolderSyncMode.Update,
+		public List<FtpFileTransferResult> TransferDirectory(string sourceFolder, FtpClient remoteClient, string remoteFolder, FtpFolderSyncMode mode = FtpFolderSyncMode.Update,
 			FtpRemoteExists existsMode = FtpRemoteExists.Skip, FtpVerify verifyOptions = FtpVerify.None, List<FtpRule> rules = null, Action<FtpProgress> progress = null) {
 
 			if (sourceFolder.IsBlank()) {
@@ -53,7 +53,7 @@ namespace FluentFTP {
 
 			LogFunc(nameof(TransferDirectory), new object[] { sourceFolder, remoteClient, remoteFolder, mode, existsMode, verifyOptions, (rules.IsBlank() ? null : rules.Count + " rules") });
 
-			var results = new List<FtpResult>();
+			var results = new List<FtpFileTransferResult>();
 
 			// cleanup the FTP paths
 			sourceFolder = sourceFolder.GetFtpPath().EnsurePostfix("/");
@@ -129,7 +129,7 @@ namespace FluentFTP {
 		/// Returns a listing of all the remote files, indicating if they were downloaded, skipped or overwritten.
 		/// Returns a blank list if nothing was transfered. Never returns null.
 		/// </returns>
-		public async Task<List<FtpResult>> TransferDirectoryAsync(string sourceFolder, FtpClient remoteClient, string remoteFolder, FtpFolderSyncMode mode = FtpFolderSyncMode.Update,
+		public async Task<List<FtpFileTransferResult>> TransferDirectoryAsync(string sourceFolder, FtpClient remoteClient, string remoteFolder, FtpFolderSyncMode mode = FtpFolderSyncMode.Update,
 			FtpRemoteExists existsMode = FtpRemoteExists.Skip, FtpVerify verifyOptions = FtpVerify.None, List<FtpRule> rules = null, IProgress<FtpProgress> progress = null, CancellationToken token = default(CancellationToken)) {
 
 			if (sourceFolder.IsBlank()) {
@@ -142,7 +142,7 @@ namespace FluentFTP {
 
 			LogFunc(nameof(TransferDirectoryAsync), new object[] { sourceFolder, remoteClient, remoteFolder, mode, existsMode, verifyOptions, (rules.IsBlank() ? null : rules.Count + " rules") });
 
-			var results = new List<FtpResult>();
+			var results = new List<FtpFileTransferResult>();
 
 			// cleanup the FTP paths
 			sourceFolder = sourceFolder.GetFtpPath().EnsurePostfix("/");
@@ -207,9 +207,9 @@ namespace FluentFTP {
 		}
 #endif
 
-		private List<FtpResult> GetSubDirectoriesToTransfer(string sourceFolder, string remoteFolder, List<FtpRule> rules, List<FtpResult> results, string[] dirListing) {
+		private List<FtpFileTransferResult> GetSubDirectoriesToTransfer(string sourceFolder, string remoteFolder, List<FtpRule> rules, List<FtpFileTransferResult> results, string[] dirListing) {
 
-			var dirsToTransfer = new List<FtpResult>();
+			var dirsToTransfer = new List<FtpFileTransferResult>();
 
 			foreach (var sourceFile in dirListing) {
 
@@ -218,7 +218,7 @@ namespace FluentFTP {
 				var remoteFile = remoteFolder + relativePath;
 
 				// create the result object
-				var result = new FtpResult {
+				var result = new FtpFileTransferResult {
 					Type = FtpFileSystemObjectType.Directory,
 					Size = 0,
 					Name = sourceFile.GetFtpDirectoryName(),
@@ -241,9 +241,9 @@ namespace FluentFTP {
 			return dirsToTransfer;
 		}
 
-		private List<FtpResult> GetFilesToTransfer(string sourceFolder, string remoteFolder, List<FtpRule> rules, List<FtpResult> results, Dictionary<string, bool> shouldExist, string[] fileListing) {
+		private List<FtpFileTransferResult> GetFilesToTransfer(string sourceFolder, string remoteFolder, List<FtpRule> rules, List<FtpFileTransferResult> results, Dictionary<string, bool> shouldExist, string[] fileListing) {
 
-			var filesToTransfer = new List<FtpResult>();
+			var filesToTransfer = new List<FtpFileTransferResult>();
 
 			foreach (var sourceFile in fileListing) {
 
@@ -252,7 +252,7 @@ namespace FluentFTP {
 				var remoteFile = remoteFolder + relativePath;
 
 				// create the result object
-				var result = new FtpResult {
+				var result = new FtpFileTransferResult {
 					Type = FtpFileSystemObjectType.File,
 					Size = GetFileSize(sourceFile),
 					Name = sourceFile.GetFtpFileName(),
@@ -278,7 +278,7 @@ namespace FluentFTP {
 			return filesToTransfer;
 		}
 
-		private void TransferServerFiles(List<FtpResult> filesToTransfer, FtpClient remoteClient, FtpRemoteExists existsMode, FtpVerify verifyOptions, Action<FtpProgress> progress, FtpListItem[] remoteListing) {
+		private void TransferServerFiles(List<FtpFileTransferResult> filesToTransfer, FtpClient remoteClient, FtpRemoteExists existsMode, FtpVerify verifyOptions, Action<FtpProgress> progress, FtpListItem[] remoteListing) {
 
 			LogFunc(nameof(TransferServerFiles), new object[] { filesToTransfer.Count + " files" });
 
@@ -318,7 +318,7 @@ namespace FluentFTP {
 
 #if ASYNC
 
-		private async Task TransferServerFilesAsync(List<FtpResult> filesToTransfer, FtpClient remoteClient, FtpRemoteExists existsMode, FtpVerify verifyOptions, IProgress<FtpProgress> progress, FtpListItem[] remoteListing, CancellationToken token) {
+		private async Task TransferServerFilesAsync(List<FtpFileTransferResult> filesToTransfer, FtpClient remoteClient, FtpRemoteExists existsMode, FtpVerify verifyOptions, IProgress<FtpProgress> progress, FtpListItem[] remoteListing, CancellationToken token) {
 
 			LogFunc(nameof(TransferServerFilesAsync), new object[] { filesToTransfer.Count + " files" });
 

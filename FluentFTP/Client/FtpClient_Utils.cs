@@ -263,7 +263,7 @@ namespace FluentFTP {
 		/// <summary>
 		/// Returns true if the file passes all the rules
 		/// </summary>
-		private bool FilePassesRules(FtpResult result, List<FtpRule> rules, bool useLocalPath, FtpListItem item = null) {
+		private bool FilePassesRules(FtpFileTransferResult result, List<FtpRule> rules, bool useLocalPath, FtpListItem item = null) {
 			if (rules != null && rules.Count > 0) {
 				var passes = FtpRule.IsAllAllowed(rules, item ?? result.ToListItem(useLocalPath));
 				if (!passes) {
