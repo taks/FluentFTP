@@ -51,17 +51,17 @@ namespace FluentFTP {
 
 			// add type
 			if (IsSkipped) {
-				sb.Append("Skipped:     ");
+				sb.Append("Skipped:       ");
 			}
 			else if (IsFailed) {
-				sb.Append("Failed:      ");
+				sb.Append("Failed:        ");
 			}
 			else {
 				if (IsDownload) {
-					sb.Append("Downloaded:  ");
+					sb.Append("Downloaded:    ");
 				}
 				else {
-					sb.Append("Uploaded:    ");
+					sb.Append("Uploaded:      ");
 				}
 			}
 
