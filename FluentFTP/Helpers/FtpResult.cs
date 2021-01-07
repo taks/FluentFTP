@@ -12,57 +12,57 @@ namespace FluentFTP {
 		/// <summary>
 		/// Returns true if the file was downloaded, false if it was uploaded.
 		/// </summary>
-		public bool IsDownload;
+		public bool IsDownload { get; internal set; }
 
 		/// <summary>
 		/// Gets the type of file system object.
 		/// </summary>
-		public FtpFileSystemObjectType Type;
+		public FtpFileSystemObjectType Type { get; internal set; }
 
 		/// <summary>
 		/// Gets the size of the file.
 		/// </summary>
-		public long Size;
+		public long Size { get; internal set; }
 
 		/// <summary>
 		/// Gets the name and extension of the file.
 		/// </summary>
-		public string Name;
+		public string Name { get; internal set; }
 
 		/// <summary>
 		/// Stores the absolute remote path of the the current file being transfered.
 		/// </summary>
-		public string RemotePath { get; set; }
+		public string RemotePath { get; internal set; }
 
 		/// <summary>
 		/// Stores the absolute local path of the the current file being transfered.
 		/// </summary>
-		public string LocalPath { get; set; }
+		public string LocalPath { get; internal set; }
 
 		/// <summary>
 		/// Gets the error that occuring during transfering this file, if any.
 		/// </summary>
-		public Exception Exception;
+		public Exception Exception { get; internal set; }
 
 		/// <summary>
 		/// Returns true if the file was downloaded/uploaded, or the file was already existing with the same file size.
 		/// </summary>
-		public bool IsSuccess;
+		public bool IsSuccess { get; internal set; }
 
 		/// <summary>
 		/// Was the file skipped?
 		/// </summary>
-		public bool IsSkipped;
+		public bool IsSkipped { get; internal set; }
 
 		/// <summary>
 		/// Was the file skipped due to failing the rule condition?
 		/// </summary>
-		public bool IsSkippedByRule;
+		public bool IsSkippedByRule { get; internal set; }
 
 		/// <summary>
 		/// Was there an error during transfer? You can read the Exception property for more details.
 		/// </summary>
-		public bool IsFailed;
+		public bool IsFailed { get; internal set; }
 
 		/// <summary>
 		/// Convert this result to a FTP list item.
